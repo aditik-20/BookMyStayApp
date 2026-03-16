@@ -1,4 +1,4 @@
-// Version 3.0
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -16,13 +16,7 @@ class RoomInventory {
     public int getAvailability(String roomType) {
         return inventory.getOrDefault(roomType, 0);
     }
-    public void updateAvailability(String roomType, int newCount) {
-        if (inventory.containsKey(roomType)) {
-            inventory.put(roomType, newCount);
-        } else {
-            System.out.println("Room type not found in inventory.");
-        }
-    }
+
     public void displayInventory() {
         System.out.println("Current Room Inventory:");
         for (Map.Entry<String, Integer> entry : inventory.entrySet()) {
@@ -30,7 +24,7 @@ class RoomInventory {
         }
     }
 }
-// Version 3.1
+
 
 public class BookMyApp {
 
@@ -38,12 +32,12 @@ public class BookMyApp {
         Scanner sc = new Scanner(System.in);
 
         RoomInventory inventory = new RoomInventory();
-        System.out.print("Standard : ");
-        int standard = sc.nextInt();
-        inventory.registerRoomType("Standard", standard);
-        System.out.print("Deluxe : ");
-        int deluxe = sc.nextInt();
-        inventory.registerRoomType("Deluxe", deluxe);
+        System.out.print("Single : ");
+        int single = sc.nextInt();
+        inventory.registerRoomType("single ", single);
+        System.out.print("Double : ");
+        int doubleR = sc.nextInt();
+        inventory.registerRoomType("DoubleR", doubleR);
         System.out.print("Suite : ");
         int suite = sc.nextInt();
         inventory.registerRoomType("Suite", suite);
@@ -51,12 +45,15 @@ public class BookMyApp {
 
         inventory.displayInventory();
 
-        System.out.println("\nAvailable Deluxe Rooms: " + inventory.getAvailability("Deluxe"));
+        System.out.println("\nAvailable Single Rooms: " + inventory.getAvailability("single"));
+        System.out.println("\nAvailable double Rooms: " + inventory.getAvailability("DoubleR"));
+ System.out.println("\nAvailable Suite Rooms: " + inventory.getAvailability("Suite"));
 
 
-        inventory.updateAvailability("Deluxe", 4);
 
-        System.out.println("\nAfter Updating Deluxe Rooms:");
+
+
+
         inventory.displayInventory();
     }
 }
