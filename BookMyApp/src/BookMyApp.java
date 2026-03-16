@@ -1,98 +1,62 @@
-import java.util.*;
+// Version 3.0
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
-abstract class Room {
 
-    private int numberOfBeds;
-    private int roomSize;
-    private double price;
+class RoomInventory {
+    private HashMap<String, Integer> inventory;
 
-    public Room(int numberOfBeds, int roomSize, double price) {
-        this.numberOfBeds = numberOfBeds;
-        this.roomSize = roomSize;
-        this.price = price;
+    public RoomInventory() {
+        inventory = new HashMap<>();
     }
-
-    public int getNumberOfBeds() {
-        return numberOfBeds;
+    public void registerRoomType(String roomType, int count) {
+        inventory.put(roomType, count);
     }
-
-    public int getRoomSize() {
-        return roomSize;
+    public int getAvailability(String roomType) {
+        return inventory.getOrDefault(roomType, 0);
     }
-
-    public double getPrice() {
-        return price;
+    public void updateAvailability(String roomType, int newCount) {
+        if (inventory.containsKey(roomType)) {
+            inventory.put(roomType, newCount);
+        } else {
+            System.out.println("Room type not found in inventory.");
+        }
     }
-
-    public abstract String getRoomType();
-
-    public void displayRoomDetails() {
-        System.out.println("Room Type: " + getRoomType());
-        System.out.println("Beds: " + numberOfBeds);
-        System.out.println("Room Size: " + roomSize + " sq ft");
-        System.out.println("Price: $" + price);
+    public void displayInventory() {
+        System.out.println("Current Room Inventory:");
+        for (Map.Entry<String, Integer> entry : inventory.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue() + " rooms available");
+        }
     }
 }
-class SingleRoom extends Room {
-
-    public SingleRoom() {
-        super(1, 200, 100);
-    }
-
-    public String getRoomType() {
-        return "Single Room";
-    }
-}
-class DoubleRoom extends Room {
-
-    public DoubleRoom() {
-        super(2, 350, 180);
-    }
-
-    public String getRoomType() {
-        return "Double Room";
-    }
-}
-class SuiteRoom extends Room {
-
-    public SuiteRoom() {
-        super(3, 500, 300);
-    }
-
-    public String getRoomType() {
-        return "Suite Room";
-    }
-}
+// Version 3.1
 
 public class BookMyApp {
-    static void main() {
-    Scanner sc = new Scanner(System.in);
-        Room singleRoom = new SingleRoom();
-        Room doubleRoom = new DoubleRoom();
-        Room suiteRoom = new SuiteRoom();
 
-        System.out.println("Single Room");
-        int singleRoomAvailable = sc.nextInt();
-        System.out.println("Double Room");
-        int doubleRoomAvailable = sc.nextInt();
-        System.out.println("Suite Room");
-        int suiteRoomAvailable = sc.nextInt();
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        RoomInventory inventory = new RoomInventory();
+        System.out.print("Standard : ");
+        int standard = sc.nextInt();
+        inventory.registerRoomType("Standard", standard);
+        System.out.print("Deluxe : ");
+        int deluxe = sc.nextInt();
+        inventory.registerRoomType("Deluxe", deluxe);
+        System.out.print("Suite : ");
+        int suite = sc.nextInt();
+        inventory.registerRoomType("Suite", suite);
 
 
-        System.out.println(" Hotel Room Information \n");
+        inventory.displayInventory();
 
-        singleRoom.displayRoomDetails();
-        System.out.println("Available: " + singleRoomAvailable);
-        System.out.println();
+        System.out.println("\nAvailable Deluxe Rooms: " + inventory.getAvailability("Deluxe"));
 
-        doubleRoom.displayRoomDetails();
-        System.out.println("Available: " + doubleRoomAvailable);
-        System.out.println();
 
-        suiteRoom.displayRoomDetails();
-        System.out.println("Available: " + suiteRoomAvailable);
-        System.out.println();
+        inventory.updateAvailability("Deluxe", 4);
 
-        System.out.println("Application Terminated.");
+        System.out.println("\nAfter Updating Deluxe Rooms:");
+        inventory.displayInventory();
     }
 }
