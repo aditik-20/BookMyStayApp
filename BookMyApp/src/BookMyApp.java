@@ -1,59 +1,50 @@
+import java.util.LinkedList;
+import java.util.Queue;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+class Reservation {
+    private String guestName;
+    private String roomType;
 
-
-class RoomInventory {
-    private HashMap<String, Integer> inventory;
-
-    public RoomInventory() {
-        inventory = new HashMap<>();
-    }
-    public void registerRoomType(String roomType, int count) {
-        inventory.put(roomType, count);
-    }
-    public int getAvailability(String roomType) {
-        return inventory.getOrDefault(roomType, 0);
+    public Reservation(String guestName, String roomType) {
+        this.guestName = guestName;
+        this.roomType = roomType;
     }
 
-    public void displayInventory() {
-        System.out.println("Current Room Inventory:");
-        for (Map.Entry<String, Integer> entry : inventory.entrySet()) {
-            System.out.println(entry.getKey() + " : " + entry.getValue() + " rooms available");
-        }
+    public String getGuestName() {
+        return guestName;
+    }
+
+    public String getRoomType() {
+        return roomType;
+    }
+
+    @Override
+    public String toString() {
+        return "Guest: " + guestName + ", Room Type: " + roomType;
     }
 }
-
 
 public class BookMyApp {
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
 
-        RoomInventory inventory = new RoomInventory();
-        System.out.print("Single : ");
-        int single = sc.nextInt();
-        inventory.registerRoomType("single ", single);
-        System.out.print("Double : ");
-        int doubleR = sc.nextInt();
-        inventory.registerRoomType("DoubleR", doubleR);
-        System.out.print("Suite : ");
-        int suite = sc.nextInt();
-        inventory.registerRoomType("Suite", suite);
+        Queue<Reservation> bookingQueue = new LinkedList<>();
 
+        bookingQueue.add(new Reservation("Alice", "Deluxe"));
+        bookingQueue.add(new Reservation("Bob", "Standard"));
+        bookingQueue.add(new Reservation("Charlie", "Suite"));
 
-        inventory.displayInventory();
+        System.out.println("Booking requests received (in order):\n");
 
-        System.out.println("\nAvailable Single Rooms: " + inventory.getAvailability("single"));
-        System.out.println("\nAvailable double Rooms: " + inventory.getAvailability("DoubleR"));
- System.out.println("\nAvailable Suite Rooms: " + inventory.getAvailability("Suite"));
+        for (Reservation r : bookingQueue) {
+            System.out.println(r);
+        }
 
+        System.out.println("\nProcessing order (FIFO):\n");
 
-
-
-
-
-        inventory.displayInventory();
+        while (!bookingQueue.isEmpty()) {
+            Reservation request = bookingQueue.poll();
+            System.out.println("Processing request -> " + request);
+        }
     }
 }
